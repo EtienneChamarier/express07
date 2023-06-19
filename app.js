@@ -4,6 +4,8 @@ const express = require("express");
 
 const app = express();
 
+const { hashPassword } = require("./auth.js");
+
 app.use(express.json());
 
 const port = process.env.APP_PORT ?? 5000;
@@ -30,6 +32,9 @@ app.post("/api/users", userHandlers.postUser);
 app.put("/api/users/:id", userHandlers.updateUser);
 app.delete("/api/users/:id", userHandlers.deleteUser);
 
+app.post("/api/users", hashPassword, userHandlers.postUser);
+app.put("/api/users/:id", hashPassword, userHandlers.updateUser);
+
 app.listen(port, (err) => {
   if (err) {
     console.error("Something bad happened");
@@ -37,3 +42,7 @@ app.listen(port, (err) => {
     console.log(`Server is listening on ${port}`);
   }
 });
+
+
+
+
